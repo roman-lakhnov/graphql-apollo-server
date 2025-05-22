@@ -1,6 +1,7 @@
+#!/bin/bash
+set -e
 # Build Docker image
 docker build -t docker-apollo-server .
-
 # Create Docker volumes if they don't exist
 docker volume create apollo-data
 docker volume create apollo-logs
@@ -21,3 +22,4 @@ docker run -d \
   docker-apollo-server
 
 echo "Deployment complete. Apollo server is running at http://localhost:4000"
+exit 0
