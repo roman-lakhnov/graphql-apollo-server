@@ -13,12 +13,14 @@ const personTypeDefs = `#graphql
   extend type Query {
     people: [Person]
     personById(id: String!): Person
-        serverIp: String
+    peopleByFirstName(firstName: String!): [Person]
+    peopleByLastName(lastName: String!): [Person]
   }
 
   type Mutation {
     createPerson(input: PersonInput): Person
     updatePerson(id: String!, input: PersonInput): Person
+    deletePerson(id: String!): Person
   }
 `
 

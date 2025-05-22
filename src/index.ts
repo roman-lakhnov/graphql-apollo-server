@@ -1,22 +1,34 @@
 import { ApolloServer } from '@apollo/server'
-import typeDefs from './graphql/typeDefs/index.js'
-import resolvers from './graphql/resolvers/index.js'
 import { startStandaloneServer } from '@apollo/server/standalone'
+import resolvers from './graphql/resolvers/index.js'
+import typeDefs from './graphql/typeDefs/index.js'
+import loggingPlugin from './utils/loggingPlugin.js'
+import { initializeDatabase } from './db/sqlite.js'
+import type Database from 'better-sqlite3'
 
-const server = new ApolloServer({
+// Define context type
+interface MyContext {
+	ip: string
+	db: any
+}
+
+// Initialize database before starting the server
+const db = initializeDatabase()
+
+const server = new ApolloServer<MyContext>({
 	typeDefs,
-	resolvers
+	resolvers,
+	plugins: [loggingPlugin]
 })
 
-// Passing an ApolloServer instance to the `startStandaloneServer` function:
-//  1. creates an Express app
-//  2. installs your ApolloServer instance as middleware
-//  3. prepares your app to handle incoming requests
 const { url } = await startStandaloneServer(server, {
 	listen: { port: 4000 },
 	context: async ({ req }) => {
-		const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
-		return { ip }
+		let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || ''
+		if (Array.isArray(ip)) {
+			ip = ip[0]
+		}
+		return { ip, db }
 	}
 })
 

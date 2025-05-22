@@ -1,7 +1,21 @@
 import { mergeResolvers } from '@graphql-tools/merge'
-import bookResolvers from './book.resolvers.js'
+import { IResolvers } from '@graphql-tools/utils'
 import personResolvers from './person.resolvers.js'
 
-const resolvers = mergeResolvers([bookResolvers, personResolvers])
+export interface MyContext {
+	db: any
+	ip?: string
+}
+
+const baseResolvers = {
+	Query: {
+		_empty: () => ''
+	}
+}
+
+const resolvers: IResolvers<any, MyContext> = mergeResolvers([
+	baseResolvers,
+	personResolvers
+])
 
 export default resolvers

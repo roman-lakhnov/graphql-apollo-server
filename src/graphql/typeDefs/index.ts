@@ -1,5 +1,4 @@
 import { mergeTypeDefs } from '@graphql-tools/merge'
-import bookTypeDefs from './book.typeDefs.js'
 import personTypeDefs from './person.typeDefs.js'
 
 const baseTypeDefs = `#graphql
@@ -8,6 +7,6 @@ const baseTypeDefs = `#graphql
   }
 `
 
-const typeDefs = mergeTypeDefs([baseTypeDefs, bookTypeDefs, personTypeDefs])
+const typeDefs = mergeTypeDefs([baseTypeDefs, personTypeDefs])
 
 export default typeDefs
