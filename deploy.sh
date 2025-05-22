@@ -1,3 +1,7 @@
+# You need to have docker installed on your system.
+
+# This script builds a Docker image for an Apollo Server application and runs it in a container.
+
 # Build Docker image
 docker build -t docker-apollo-server .
 
