@@ -1,42 +1,22 @@
-# FROM node:18
-
-# # Create app directory
-# WORKDIR /usr/src/app
-
-# # Copy package.json and package-lock.json
-# COPY package*.json ./
-
-# # Install dependencies
-# RUN npm install
-
-# # Copy source code
-# COPY . .
-
-# # Expose the port the app runs on
-# EXPOSE 4000
-
-# # Command to run the app
-# CMD ["npm", "start"]
-
-# ////////////////////////////////////////////
-
-# Этап сборки
-
-FROM node:18 AS builder
+# Build stage
+FROM node:23-slim AS builder
 
 WORKDIR /app
-COPY package*.json ./
-RUN npm install --only=production
 COPY . .
+RUN npm install
+RUN npm run compile
+RUN chown -R 1000:1000 /app 
 
-# Этап запуска
+# Production stage
 FROM reg.mini.dev/mini_4amgcnbbvtknt75x5lztb37pswexv6im/node:latest
 
-WORKDIR /usr/src/app
-COPY --from=builder /app .
-
-# (по желанию) USER node — если хочешь более безопасно
+WORKDIR /app
+COPY --from=builder /app/dist /app/dist
+COPY package*.json ./
+RUN npm ci --only=production
 EXPOSE 4000
-CMD ["sh", "-c", "npm start"]
+
+ENTRYPOINT ["node"]
+CMD ["/app/dist/index.js"]
 
 

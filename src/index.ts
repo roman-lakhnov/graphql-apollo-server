@@ -1,10 +1,9 @@
 import { ApolloServer } from '@apollo/server'
 import { startStandaloneServer } from '@apollo/server/standalone'
+import { initializeDatabase } from './db/sqlite.js'
 import resolvers from './graphql/resolvers/index.js'
 import typeDefs from './graphql/typeDefs/index.js'
 import loggingPlugin from './utils/loggingPlugin.js'
-import { initializeDatabase } from './db/sqlite.js'
-import type Database from 'better-sqlite3'
 
 // Define context type
 interface MyContext {
