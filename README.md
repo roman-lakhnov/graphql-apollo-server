@@ -34,6 +34,10 @@ The server will run at [http://localhost:4000](http://localhost:4000).
 - `src/graphql/resolvers/` - Resolver functions.
 - `src/loaders/db.loader.ts` - Database loader (mock data).
 
+## Containerization
+
+This project includes Dockerfile for containerization with minimalist Linux distribution (minimus)
+
 ## License
 
 MIT License.
